@@ -1,5 +1,3 @@
-#!/bin/bash
-
 VERSION=1.0.0-SNAPSHOT
 DOCKERTAG=local/launchpad-ui:$(VERSION)
 
