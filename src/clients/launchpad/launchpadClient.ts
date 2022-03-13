@@ -1,4 +1,4 @@
-import axios, {AxiosResponse} from "axios";
+import axios from "axios";
 import {VideoResponse} from "../../types/client/launchpad/types";
 
 export function fetchVideos(page: Number, size: Number, filter?: String): Promise<VideoResponse> {
