@@ -1,13 +1,14 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import * as launchpadClient from "../clients/launchpad/launchpadClient";
-import {MediaFile} from "../types/app/types";
+import {MediaFile} from "../types/app/media/types";
 import {toMediaFile} from "../converter/client/launchpad/converter";
 
 
 const initialState: VideoState = {
     files: [],
     currentPage: 0,
-    totalPages: 0
+    totalPages: 0,
+    searchFilter: ""
 }
 
 
@@ -33,12 +34,30 @@ export const openVideoFileLocation = createAsyncThunk(
     }
 )
 
+export const openVideoFileShuffle = createAsyncThunk(
+    'video/openVideoFileShuffle',
+    async (filter: String, thunkAPI) => {
+        return await launchpadClient.openVideoShuffle(filter);
+    }
+)
+
+export const killVideoPlayer = createAsyncThunk(
+    'video/killVideoPlayer',
+    async (thunkAPI) => {
+        return await launchpadClient.killVidePlayer();
+    }
+)
+
+
 export const videoSlice = createSlice(
     {
         name: "video",
         initialState,
         reducers: {
-            reset: () => initialState
+            reset: () => initialState,
+            setSearchFilter: (state, action: PayloadAction<String>) => {
+                state.searchFilter = action.payload
+            }
         },
         extraReducers: (builder => {
             builder.addCase(fetchVideos.fulfilled, (state, action) => {
@@ -54,8 +73,9 @@ export interface VideoState {
     files: MediaFile[],
     currentPage: number,
     totalPages: number,
+    searchFilter: String
 }
 
-export const {reset} = videoSlice.actions
+export const {reset, setSearchFilter} = videoSlice.actions
 
 export default videoSlice.reducer

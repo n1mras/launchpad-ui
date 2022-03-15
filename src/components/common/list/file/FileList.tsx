@@ -8,7 +8,7 @@ import {
     TextField
 } from "@mui/material";
 import {Folder as FolderIcon} from '@mui/icons-material';
-import {MediaFile} from "../../../../types/app/types";
+import {MediaFile} from "../../../../types/app/media/types";
 
 
 export function FileList({files, onOpenFile, onOpenFileLocation, onSearchChange, page, pageTotal, onPageChange}: FileListProps) {
