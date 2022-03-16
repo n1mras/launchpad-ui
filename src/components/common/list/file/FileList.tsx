@@ -13,7 +13,6 @@ import {MediaFile} from "../../../../types/app/media/types";
 
 export function FileList({files, onOpenFile, onOpenFileLocation, onSearchChange, page, pageTotal, onPageChange}: FileListProps) {
     const [selectedId, setSelectedId] = useState(-1)
-    const [searchText, setSearchText] = useState("");
 
     const paginationEnabled = !!(page && pageTotal && onPageChange)
     return (
@@ -28,9 +27,7 @@ export function FileList({files, onOpenFile, onOpenFileLocation, onSearchChange,
                         margin: '10px 20px'
                     }}
                     onChange={e => {
-                        let value = e?.target?.value;
-                        onSearchChange?.(value);
-                        setSearchText(value);
+                        onSearchChange?.(e?.target?.value);
                     }}
                 />
             }
@@ -41,7 +38,7 @@ export function FileList({files, onOpenFile, onOpenFileLocation, onSearchChange,
                 <Pagination
                     count={pageTotal}
                     page={page}
-                    onChange={(e, pageSelect) => onPageChange(pageSelect, searchText)}
+                    onChange={(e, pageSelect) => onPageChange(pageSelect)}
                     sx={{
                         minWidth: '350px'
                     }}
@@ -91,6 +88,6 @@ type FileListProps = {
     onSearchChange?: (text: String) => void,
     page?: number,
     pageTotal?: number,
-    onPageChange?: (page: number, filter?: String) => void
+    onPageChange?: (page: number) => void
 
 }

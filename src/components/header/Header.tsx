@@ -2,7 +2,7 @@ import React from 'react'
 import {AppBar, Box, Button, Container, Grid, IconButton, Toolbar} from "@mui/material";
 import {Cached as CachedIcon} from '@mui/icons-material';
 import {openVideoShuffle, refreshDatabase} from "../../clients/launchpad/launchpadClient";
-import {killVideoPlayer} from "../../redux/videoReducer";
+import {killVideoPlayer, reset} from "../../redux/videoReducer";
 import CancelIcon from "@mui/icons-material/Cancel";
 import {useDispatch, useSelector} from "react-redux";
 import ShuffleIcon from "@mui/icons-material/Shuffle";

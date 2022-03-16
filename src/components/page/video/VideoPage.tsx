@@ -12,10 +12,10 @@ import {RootState} from "../../../redux/store";
 
 export function VideoPage() {
     const pageSize: number = 100;
-    const dispatch = useDispatch()
-    useEffect(() => onMountHandler(dispatch), [])
-
     const state = useSelector((state: RootState) => state.video);
+    const dispatch = useDispatch()
+
+    useEffect(() => onMountHandler(dispatch), [])
     useEffect(() => {
         dispatch(fetchVideos({page: 0, size: pageSize, filter: state.searchFilter}));
     }, [state.searchFilter])
@@ -36,7 +36,7 @@ export function VideoPage() {
                     onOpenFile={(file) => dispatch(openVideoFile(file.id))}
                     onOpenFileLocation={(file) => dispatch(openVideoFileLocation(file.id))}
                     onSearchChange={(filter) => dispatch(setSearchFilter(filter))}
-                    onPageChange={(page, filter) => dispatch(fetchVideos({page: page -1, size: 25, filter}))}
+                    onPageChange={(page) => dispatch(fetchVideos({page: page -1, size: pageSize, filter: state.searchFilter}))}
                     page={state.currentPage + 1}
                     pageTotal={state.totalPages}
                 />
