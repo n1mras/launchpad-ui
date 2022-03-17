@@ -16,12 +16,12 @@ export function refreshDatabase(): Promise<void> {
     return axios.post('/api/v1/media/video');
 }
 
-export function openVideo(id: Number): Promise<any> {
+export function openVideo(id: Number): Promise<VideoFileResponse> {
     return axios.post('/api/v1/launcher/video/' + id)
         .then(response => response.data)
 }
 
-export function openVideoLocation(id: Number): Promise<any> {
+export function openVideoLocation(id: Number): Promise<VideoFileResponse> {
     return axios.post('/api/v1/launcher/video/' + id + '/location')
         .then(response => response.data)
 }

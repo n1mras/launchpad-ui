@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {
     Box,
     List,
@@ -11,9 +11,7 @@ import {Folder as FolderIcon} from '@mui/icons-material';
 import {MediaFile} from "../../../../types/app/media/types";
 
 
-export function FileList({files, onOpenFile, onOpenFileLocation, onSearchChange, page, pageTotal, onPageChange}: FileListProps) {
-    const [selectedId, setSelectedId] = useState(-1)
-
+export function FileList({files, onOpenFile, onOpenFileLocation, onSearchChange, page, pageTotal, onPageChange, selectedId}: FileListProps) {
     const paginationEnabled = !!(page && pageTotal && onPageChange)
     return (
         <Box sx={{minWidth: '350px', maxWidth: '1024px', overflow: 'hidden'}}>
@@ -32,7 +30,7 @@ export function FileList({files, onOpenFile, onOpenFileLocation, onSearchChange,
                 />
             }
             <List dense>
-                {mapRows(files, selectedId, setSelectedId, onOpenFile, onOpenFileLocation)}
+                {mapRows(files, onOpenFile, onOpenFileLocation, selectedId)}
             </List>
             { paginationEnabled &&
                 <Pagination
@@ -50,7 +48,7 @@ export function FileList({files, onOpenFile, onOpenFileLocation, onSearchChange,
 }
 
 
-function mapRows(files: MediaFile[], selectedId: Number, setSelectedId: Function, onOpenFile: Function, onOpenFileLocation: Function): JSX.Element[] {
+function mapRows(files: MediaFile[], onOpenFile: Function, onOpenFileLocation: Function, selectedId?: number): JSX.Element[] {
     return files.map(file => {
         const isSelected = file.id === selectedId;
         return (
@@ -58,7 +56,6 @@ function mapRows(files: MediaFile[], selectedId: Number, setSelectedId: Function
                 key={file.id.toString()}
                 className={"fileListRow"}
                 onClick={() => {
-                    setSelectedId(file.id);
                     onOpenFile(file)
                 }}
                 selected={isSelected}
@@ -66,7 +63,6 @@ function mapRows(files: MediaFile[], selectedId: Number, setSelectedId: Function
 
                 <ListItemIcon onClick={(e) => {
                     e.stopPropagation();
-                    setSelectedId(file.id)
                     onOpenFileLocation(file)
                 }}>
                     <FolderIcon/>
@@ -88,6 +84,7 @@ type FileListProps = {
     onSearchChange?: (text: String) => void,
     page?: number,
     pageTotal?: number,
-    onPageChange?: (page: number) => void
+    onPageChange?: (page: number) => void,
+    selectedId?: number
 
 }

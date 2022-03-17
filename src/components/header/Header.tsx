@@ -1,13 +1,14 @@
 import React from 'react'
 import {AppBar, Box, Button, Container, Grid, IconButton, Toolbar} from "@mui/material";
 import {Cached as CachedIcon} from '@mui/icons-material';
-import {openVideoShuffle, refreshDatabase} from "../../clients/launchpad/launchpadClient";
-import {killVideoPlayer, reset} from "../../redux/videoReducer";
+import {refreshDatabase} from "../../clients/launchpad/launchpadClient";
+import {killVideoPlayer, openVideoFileShuffle, reset} from "../../redux/videoReducer";
 import CancelIcon from "@mui/icons-material/Cancel";
 import {useDispatch, useSelector} from "react-redux";
 import ShuffleIcon from "@mui/icons-material/Shuffle";
 import './header.scss';
 import {RootState} from "../../redux/store";
+import {deNullify} from "../../utils/misc";
 
 // placeholder header menu
 export function Header() {
@@ -31,7 +32,7 @@ export function Header() {
                         </div>
                         <div className={"center"}>
                             <IconButton
-                                onClick={() => dispatch(openVideoShuffle(searchFilter))}
+                                onClick={() => dispatch(openVideoFileShuffle(searchFilter))}
                             >
                                 <ShuffleIcon/>
                             </IconButton>

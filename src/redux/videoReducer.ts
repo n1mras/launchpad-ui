@@ -8,7 +8,8 @@ const initialState: VideoState = {
     files: [],
     currentPage: 0,
     totalPages: 0,
-    searchFilter: ""
+    searchFilter: undefined,
+    previousVideo: undefined
 }
 
 
@@ -36,7 +37,7 @@ export const openVideoFileLocation = createAsyncThunk(
 
 export const openVideoFileShuffle = createAsyncThunk(
     'video/openVideoFileShuffle',
-    async (filter: String, thunkAPI) => {
+    async (filter: String|undefined, thunkAPI) => {
         return await launchpadClient.openVideoShuffle(filter);
     }
 )
@@ -57,14 +58,24 @@ export const videoSlice = createSlice(
             reset: () => initialState,
             setSearchFilter: (state, action: PayloadAction<String>) => {
                 state.searchFilter = action.payload
+            },
+            setPreviousVideo: (state, action: PayloadAction<MediaFile>) => {
+                state.previousVideo = action.payload
             }
         },
         extraReducers: (builder => {
-            builder.addCase(fetchVideos.fulfilled, (state, action) => {
-                state.files = action.payload.content.map(toMediaFile)
-                state.currentPage = action.payload.page
-                state.totalPages = action.payload.total
-            })
+            builder
+                .addCase(fetchVideos.fulfilled, (state, action) => {
+                    state.files = action.payload.content.map(toMediaFile)
+                    state.currentPage = action.payload.page
+                    state.totalPages = action.payload.total
+                })
+                .addCase(openVideoFile.fulfilled, (state, action) => {
+                    state.previousVideo = toMediaFile(action.payload)
+                })
+                .addCase(openVideoFileShuffle.fulfilled, (state, action) => {
+                    state.previousVideo = toMediaFile(action.payload)
+                })
         })
     }
 )
@@ -73,7 +84,8 @@ export interface VideoState {
     files: MediaFile[],
     currentPage: number,
     totalPages: number,
-    searchFilter: String
+    searchFilter?: String
+    previousVideo?: MediaFile
 }
 
 export const {reset, setSearchFilter} = videoSlice.actions
