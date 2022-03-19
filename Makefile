@@ -6,6 +6,7 @@ DOCKERTAG=local/launchpad-ui:$(VERSION)
 help:
 	$(info ---------------------------------------------------------)
 	$(info make image: build a runnable launchpad-ui docker image)
+	$(info make run: Runs docker image)
 	$(info ---------------------------------------------------------)
 
 image:
