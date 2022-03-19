@@ -1,6 +1,6 @@
 # Launchpad UI
 
-A React Web UI for use with the launchpad backend application
+A React Web UI for use with the [launchpad backend](https://github.com/n1mras/launchpad) application
 
 # Install:
  ## Docker
