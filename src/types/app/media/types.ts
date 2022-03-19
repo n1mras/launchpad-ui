@@ -1,4 +1,4 @@
 export interface MediaFile {
-    id: Number,
+    id: number,
     name: String
 }

@@ -39,6 +39,7 @@ export function VideoPage() {
                     onPageChange={(page) => dispatch(fetchVideos({page: page -1, size: pageSize, filter: state.searchFilter}))}
                     page={state.currentPage + 1}
                     pageTotal={state.totalPages}
+                    selectedId={state.previousVideo?.id}
                 />
             </Grid>
         </Box>
