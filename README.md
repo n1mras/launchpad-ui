@@ -2,11 +2,13 @@
 
 A React Web UI for use with the [launchpad backend](https://github.com/n1mras/launchpad) application
 
-#About
+# About
     Launchpad is a small hobby project (primarily written for fun) for remotely launching media* content on a host computer
     from a local home network. Do not expose on the internet, no effort has been put into security for such use.
-    
+
     * initially just video support.
+
+
 # Install:
  ## Docker
     Use the makefile to build and run a docker image of this app (see make help).
