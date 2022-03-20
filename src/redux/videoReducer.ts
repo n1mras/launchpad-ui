@@ -1,7 +1,8 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import * as launchpadClient from "../clients/launchpad/launchpadClient";
+import * as libraryClient from "../clients/launchpad/libraryClient";
+import * as videoPlayerClient from "../clients/launchpad/videoPlayerClient";
 import {MediaFile} from "../types/app/media/types";
-import {toMediaFile} from "../converter/client/launchpad/converter";
+import {toMediaFile, toVideoPlayerExtensions} from "../converter/client/launchpad/converter";
 
 
 const initialState: VideoState = {
@@ -9,7 +10,15 @@ const initialState: VideoState = {
     currentPage: 0,
     totalPages: 0,
     searchFilter: undefined,
-    previousVideo: undefined
+    currentVideo: undefined,
+    playerExtensions: {
+        cycleAudioTrack: false,
+        cycleSubtitles: false,
+        pauseResume: false,
+        skipBackward: false,
+        skipForward: false,
+        toggleSubtitles: false
+    }
 }
 
 
@@ -17,35 +26,80 @@ export const fetchVideos = createAsyncThunk(
     'video/fetchVideos',
     async (params: { page: Number, size: Number, filter?: String }, thunkAPI) => {
         const {page, size, filter} = params;
-        return await launchpadClient.fetchVideos(page, size, filter)
+        return await libraryClient.fetchVideos(page, size, filter)
     }
 )
 
 export const openVideoFile = createAsyncThunk(
     'video/openVideoFile',
     async (id: Number, thunkAPI) => {
-        return await launchpadClient.openVideo(id);
+        return await videoPlayerClient.openVideo(id);
     }
 )
 
 export const openVideoFileLocation = createAsyncThunk(
     'video/openVideoFileLocation',
     async (id: Number, thunkAPI) => {
-        return await launchpadClient.openVideoLocation(id);
+        return await libraryClient.openVideoLocation(id);
     }
 )
 
-export const openVideoFileShuffle = createAsyncThunk(
-    'video/openVideoFileShuffle',
+export const openRandomVideoFile = createAsyncThunk(
+    'video/openRandomVideoFile',
     async (filter: String|undefined, thunkAPI) => {
-        return await launchpadClient.openVideoShuffle(filter);
+        return await videoPlayerClient.openVideoShuffle(filter);
     }
 )
 
-export const killVideoPlayer = createAsyncThunk(
-    'video/killVideoPlayer',
+export const closeVideoPlayer = createAsyncThunk(
+    'video/closeVideoPlayer',
     async (thunkAPI) => {
-        return await launchpadClient.killVidePlayer();
+        return await videoPlayerClient.closeVideoPlayer();
+    }
+)
+
+export const fetchVideoPlayerExtensions = createAsyncThunk(
+    'vide/fetchVideoPlayerExtensions',
+    async (thunkAPI) => {
+        return await videoPlayerClient.fetchVideoPlayerExtensions();
+    }
+)
+
+
+export const cycleAudioTrack = createAsyncThunk(
+    'vide/cycleAudioTrack',
+    async (thunkAPI) => {
+        return await videoPlayerClient.cycleAudioTrack();
+    }
+)
+export const skipBackward = createAsyncThunk(
+    'vide/skipBackward',
+    async (thunkAPI) => {
+        return await videoPlayerClient.skipBackward();
+    }
+)
+export const skipForward = createAsyncThunk(
+    'vide/skipForward',
+    async (thunkAPI) => {
+        return await videoPlayerClient.skipForward();
+    }
+)
+export const pauseResume = createAsyncThunk(
+    'vide/pauseResume',
+    async (thunkAPI) => {
+        return await videoPlayerClient.pauseResume();
+    }
+)
+export const cycleSubtitles = createAsyncThunk(
+    'vide/cycleSubtitles',
+    async (thunkAPI) => {
+        return await videoPlayerClient.cycleSubtitles();
+    }
+)
+export const toggleSubtitles = createAsyncThunk(
+    'vide/toggleSubtitles',
+    async (thunkAPI) => {
+        return await videoPlayerClient.toggleSubtitle();
     }
 )
 
@@ -58,9 +112,6 @@ export const videoSlice = createSlice(
             reset: () => initialState,
             setSearchFilter: (state, action: PayloadAction<String>) => {
                 state.searchFilter = action.payload
-            },
-            setPreviousVideo: (state, action: PayloadAction<MediaFile>) => {
-                state.previousVideo = action.payload
             }
         },
         extraReducers: (builder => {
@@ -71,10 +122,25 @@ export const videoSlice = createSlice(
                     state.totalPages = action.payload.total
                 })
                 .addCase(openVideoFile.fulfilled, (state, action) => {
-                    state.previousVideo = toMediaFile(action.payload)
+                    state.currentVideo = toMediaFile(action.payload)
                 })
-                .addCase(openVideoFileShuffle.fulfilled, (state, action) => {
-                    state.previousVideo = toMediaFile(action.payload)
+                .addCase(openRandomVideoFile.fulfilled, (state, action) => {
+                    state.currentVideo = toMediaFile(action.payload)
+                })
+                .addCase(fetchVideoPlayerExtensions.fulfilled, (state, action) => {
+                    state.playerExtensions = toVideoPlayerExtensions(action.payload)
+                })
+                .addCase(cycleAudioTrack.fulfilled, (state, action) => {
+                })
+                .addCase(skipBackward.fulfilled, (state, action) => {
+                })
+                .addCase(skipForward.fulfilled, (state, action) => {
+                })
+                .addCase(pauseResume.fulfilled, (state, action) => {
+                })
+                .addCase(cycleSubtitles.fulfilled, (state, action) => {
+                })
+                .addCase(closeVideoPlayer.fulfilled, (state, action) => {
                 })
         })
     }
@@ -85,7 +151,17 @@ export interface VideoState {
     currentPage: number,
     totalPages: number,
     searchFilter?: String
-    previousVideo?: MediaFile
+    currentVideo?: MediaFile
+    playerExtensions: VideoPlayerExtensions
+}
+
+export interface VideoPlayerExtensions {
+    pauseResume: boolean
+    skipForward: boolean
+    skipBackward: boolean
+    cycleAudioTrack: boolean
+    cycleSubtitles: boolean
+    toggleSubtitles: boolean
 }
 
 export const {reset, setSearchFilter} = videoSlice.actions
