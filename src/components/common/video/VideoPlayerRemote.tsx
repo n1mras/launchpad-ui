@@ -17,11 +17,12 @@ import {
 
 export default function VideoPlayerRemote(props: VideoPlayerRemoteProps) {
     const extensions = useSelector(((state: RootState) => state.video.playerExtensions));
+    const searchFilter = useSelector((state: RootState) => state.video.searchFilter);
     const dispatch = useDispatch();
 
     return (
         <Box className={"video-player-remote"}>
-            {renderShuffleButton(dispatch)}
+            {renderShuffleButton(searchFilter, dispatch)}
             {renderCycleAudioTrackBtn(extensions, dispatch)}
             {renderSkipBackBtn(extensions, dispatch)}
             {renderPauseResumeBtn(extensions, dispatch)}
@@ -32,9 +33,9 @@ export default function VideoPlayerRemote(props: VideoPlayerRemoteProps) {
     )
 }
 
-function renderShuffleButton(dispatch: Function): JSX.Element {
+function renderShuffleButton(searchFilter: String|undefined, dispatch: Function): JSX.Element {
     return (
-        <IconButton onClick={() => dispatch(openRandomVideoFile())}>
+        <IconButton onClick={() => dispatch(openRandomVideoFile(searchFilter))}>
             <ShuffleOutlinedIcon/>
         </IconButton>
     )
