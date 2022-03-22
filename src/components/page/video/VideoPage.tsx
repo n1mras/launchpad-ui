@@ -3,6 +3,7 @@ import {FileList} from "../../common/list/file/FileList";
 import {Box, Grid, IconButton} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {
+    fetchVideoPlayerExtensions,
     fetchVideos,
     openVideoFile,
     openVideoFileLocation,
@@ -39,7 +40,7 @@ export function VideoPage() {
                     onPageChange={(page) => dispatch(fetchVideos({page: page -1, size: pageSize, filter: state.searchFilter}))}
                     page={state.currentPage + 1}
                     pageTotal={state.totalPages}
-                    selectedId={state.previousVideo?.id}
+                    selectedId={state.currentVideo?.id}
                 />
             </Grid>
         </Box>
@@ -47,6 +48,7 @@ export function VideoPage() {
 }
 
 function onMountHandler(dispatch: Function): VoidFunction {
+    dispatch(fetchVideoPlayerExtensions())
     return () => onDismountHandler(dispatch)
 }
 
