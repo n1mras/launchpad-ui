@@ -22,6 +22,7 @@ export function Header() {
                 position={"static"}
                 sx={{
                     backgroundColor: "#7c91ad",
+                    color: "#000000"
                 }}
             >
                 <Toolbar>
