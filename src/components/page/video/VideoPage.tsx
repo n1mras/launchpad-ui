@@ -1,13 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect} from 'react'
 import {FileList} from "../../common/list/file/FileList";
-import {Box, Divider, Grid, IconButton} from "@mui/material";
+import {Box} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {
     fetchVideoPlayerExtensions,
     fetchVideos,
     openVideoFile,
     openVideoFileLocation,
-    reset, setSearchFilter,
+    reset,
+    setSearchFilter,
 } from "../../../redux/videoReducer";
 import {RootState} from "../../../redux/store";
 import "./videoPage.scss";
@@ -40,7 +42,6 @@ export function VideoPage() {
                 }))}
                 page={state.currentPage + 1}
                 pageTotal={state.totalPages}
-                selectedId={state.currentVideo?.id}
             />
         </Box>
     )

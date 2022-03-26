@@ -10,8 +10,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../redux/store";
 import {
     closeVideoPlayer,
-    cycleAudioTrack, cycleSubtitles,
-    openRandomVideoFile, pauseResume, skipBackward, skipForward,
+    cycleAudioTrack,
+    cycleSubtitles,
+    openRandomVideoFile,
+    pauseResume,
+    skipBackward,
+    skipForward,
     VideoPlayerExtensions
 } from "../../../redux/videoReducer";
 
