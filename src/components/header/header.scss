@@ -6,6 +6,19 @@
     min-width: 350px;
     max-width: 1600px;
     width: 100%;
-
+  }
+  
+  @media only screen and (max-width: 400px) {
+    .menu-container {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      .left {
+        display: none;
+      }
+      .right {
+        display: none;
+      }
+    }
   }
 }

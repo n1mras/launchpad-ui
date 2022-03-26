@@ -1,14 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect} from 'react'
 import {FileList} from "../../common/list/file/FileList";
-import {Box, Grid, IconButton} from "@mui/material";
+import {Box} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {
+    fetchVideoPlayerExtensions,
     fetchVideos,
     openVideoFile,
     openVideoFileLocation,
-    reset, setSearchFilter,
+    reset,
+    setSearchFilter,
 } from "../../../redux/videoReducer";
 import {RootState} from "../../../redux/store";
+import "./videoPage.scss";
 
 export function VideoPage() {
     const pageSize: number = 100;
@@ -21,32 +25,30 @@ export function VideoPage() {
     }, [state.searchFilter])
 
     return (
-        <Box className={"video-page"} sx={{flexGrow: 1}}>
-            <Grid
-                margin={"auto"}
-                alignItems="center"
-                justifyContent="center"
-                flexDirection={"column"}
-                minWidth={"350px"}
-                maxWidth={"1024px"}
-                width={"100%"}
-            >
-                <FileList
-                    files={state.files}
-                    onOpenFile={(file) => dispatch(openVideoFile(file.id))}
-                    onOpenFileLocation={(file) => dispatch(openVideoFileLocation(file.id))}
-                    onSearchChange={(filter) => dispatch(setSearchFilter(filter))}
-                    onPageChange={(page) => dispatch(fetchVideos({page: page -1, size: pageSize, filter: state.searchFilter}))}
-                    page={state.currentPage + 1}
-                    pageTotal={state.totalPages}
-                    selectedId={state.previousVideo?.id}
-                />
-            </Grid>
+        <Box className={"video-page"}>
+            {
+                state.currentVideo?.name &&
+                    <p id={"current-video-title"}>{state.currentVideo?.name}</p>
+            }
+            <FileList
+                files={state.files}
+                onOpenFile={(file) => dispatch(openVideoFile(file.id))}
+                onOpenFileLocation={(file) => dispatch(openVideoFileLocation(file.id))}
+                onSearchChange={(filter) => dispatch(setSearchFilter(filter))}
+                onPageChange={(page) => dispatch(fetchVideos({
+                    page: page - 1,
+                    size: pageSize,
+                    filter: state.searchFilter
+                }))}
+                page={state.currentPage + 1}
+                pageTotal={state.totalPages}
+            />
         </Box>
     )
 }
 
 function onMountHandler(dispatch: Function): VoidFunction {
+    dispatch(fetchVideoPlayerExtensions())
     return () => onDismountHandler(dispatch)
 }
 
