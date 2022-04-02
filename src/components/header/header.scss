@@ -1,4 +1,7 @@
 .header {
+  top: 0;
+  position: sticky;
+  z-index: 1100;
   .menu-container {
     display: flex;
     justify-content: space-between;
