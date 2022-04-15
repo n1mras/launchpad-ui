@@ -4,7 +4,15 @@ import {Folder as FolderIcon} from '@mui/icons-material';
 import {MediaFile} from "../../../../types/app/media/types";
 
 
-export function FileList({files, onOpenFile, onOpenFileLocation, onSearchChange, page, pageTotal, onPageChange}: FileListProps) {
+export function FileList({
+                             files,
+                             onOpenFile,
+                             onOpenFileLocation,
+                             onSearchChange,
+                             page,
+                             pageTotal,
+                             onPageChange
+                         }: FileListProps) {
     const [selectedId, setSelectedId] = useState(-1)
     const paginationEnabled = !!(page && pageTotal && onPageChange)
 
@@ -38,41 +46,56 @@ export function FileList({files, onOpenFile, onOpenFileLocation, onSearchChange,
         })
     }
 
+    const renderSearchInput = () => {
+        return (
+            onSearchChange &&
+            <TextField
+                id="video-search-field"
+                label="Search"
+                variant="standard"
+                sx={{
+                    width: '100%',
+                    margin: '10px 20px'
+                }}
+                onChange={e => {
+                    onSearchChange?.(e?.target?.value);
+                }}
+            />
+        )
+    }
+
+    const renderPagination = () => {
+        return (
+            paginationEnabled &&
+            <Pagination
+                count={pageTotal}
+                page={page}
+                onChange={(e, pageSelect) => {
+                    onPageChange(pageSelect);
+                    window.scrollTo(0, 0);
+                }}
+                sx={{
+                    display: 'flex',
+                    alignContent: 'center',
+                    justifyItems: 'center',
+                    minWidth: '350px',
+                    padding: '10px 0px 30px 0px'
+                }}
+            />
+        )
+    }
+
 
     return (
         <Box sx={{minWidth: '350px', maxWidth: '1024px', overflow: 'hidden'}}>
-            {onSearchChange &&
-                <TextField
-                    id="video-search-field"
-                    label="Search"
-                    variant="standard"
-                    sx={{
-                        width: '100%',
-                        margin: '10px 20px'
-                    }}
-                    onChange={e => {
-                        onSearchChange?.(e?.target?.value);
-                    }}
-                />
-            }
+            {renderSearchInput()}
             <List dense>
                 {mapRows()}
             </List>
-            { paginationEnabled &&
-                <Pagination
-                    count={pageTotal}
-                    page={page}
-                    onChange={(e, pageSelect) => onPageChange(pageSelect)}
-                    sx={{
-                        minWidth: '350px'
-                    }}
-
-                />
-            }
+            {renderPagination()}
         </Box>
     )
 }
-
 
 
 type FileListProps = {
