@@ -1,8 +1,9 @@
-FROM docker.io/node:17 AS build-stage
+FROM docker.io/node:18 AS build-stage
 
 WORKDIR /opt/
 COPY ./ /opt/
-RUN npm install
+RUN npm config set update-notifier false #disable npm patch notice.
+RUN npm install --omit=dev --silent
 RUN npm run build
 
 FROM docker.io/httpd:2.4
