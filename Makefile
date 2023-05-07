@@ -1,4 +1,4 @@
-VERSION=1.0.0-SNAPSHOT
+VERSION=1.0.0
 DOCKERTAG=local/launchpad-ui:$(VERSION)
 
 .PHONY: help docker run
@@ -10,7 +10,7 @@ help:
 	$(info ---------------------------------------------------------)
 
 image:
-	docker build --no-cache -t $(DOCKERTAG) -f docker/Dockerfile .
+	docker build --pull --no-cache -t $(DOCKERTAG) -f docker/Dockerfile .
 
 run:
 	docker run -d -p 8080:80 --add-host=dockerhost:172.17.0.1 -t $(DOCKERTAG)
