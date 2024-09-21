@@ -1,4 +1,4 @@
-FROM docker.io/node:18 AS build-stage
+FROM docker.io/node:20 AS build-stage
 
 WORKDIR /opt/
 COPY ./ /opt/
