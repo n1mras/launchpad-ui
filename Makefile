@@ -1,5 +1,6 @@
-VERSION=1.0.0
+VERSION=$(shell jq -r '.version' package.json)
 DOCKERTAG=local/launchpad-ui:$(VERSION)
+ENGINE?=docker
 
 .PHONY: help docker run
 
@@ -10,7 +11,7 @@ help:
 	$(info ---------------------------------------------------------)
 
 image:
-	docker build --pull --no-cache -t $(DOCKERTAG) -f docker/Dockerfile .
+	$(ENGINE) build --pull --no-cache -t $(DOCKERTAG) -f docker/Dockerfile .
 
 run:
-	docker run -d -p 8080:80 --add-host=dockerhost:172.17.0.1 -t $(DOCKERTAG)
+	$(ENGINE) run -d -p 8080:80 --add-host=dockerhost:172.17.0.1 -t $(DOCKERTAG)

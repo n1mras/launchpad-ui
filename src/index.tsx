@@ -1,24 +1,29 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client'; // Import the new root API
 import './index.scss';
 import reportWebVitals from './reportWebVitals';
-import {Provider} from "react-redux";
-import {store} from "./redux/store";
-import {VideoPage} from "./components/page/video/VideoPage";
-import {Header} from "./components/header/Header";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import { VideoPage } from "./components/page/video/VideoPage";
+import { Header } from "./components/header/Header";
+
+// Roboto Fonts
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-ReactDOM.render(
+const container = document.getElementById('root');
+if (!container) throw new Error('Root element not found');
+const root = createRoot(container);
+
+root.render(
     <React.StrictMode>
         <Provider store={store}>
-            <Header/>
-            <VideoPage/>
+            <Header />
+            <VideoPage />
         </Provider>
-    </React.StrictMode>,
-    document.getElementById('root')
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
