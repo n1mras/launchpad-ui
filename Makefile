@@ -1,4 +1,4 @@
-VERSION=$(shell jq -r '.version' package.json)
+VERSION=$(shell grep '"version"' package.json | sed -E 's/.*"version": "([^"]+)".*/\1/')
 DOCKERTAG=local/launchpad-ui:$(VERSION)
 ENGINE?=docker
 
